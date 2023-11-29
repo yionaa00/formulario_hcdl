@@ -1,5 +1,6 @@
 <?php
 $conex = mysqli_connect("localhost", "root", "", "formulario_hcdl");
+$where="";
 ?>
 
 <!DOCTYPE html>
@@ -16,7 +17,6 @@ $conex = mysqli_connect("localhost", "root", "", "formulario_hcdl");
 
 </head>
 <body>
-    <form method="post">
     <h1>Formulario HCDL | ACCESS POINTS</h1>
 
     <ul>
@@ -25,14 +25,35 @@ $conex = mysqli_connect("localhost", "root", "", "formulario_hcdl");
         <li><a href="impresoras.php">Impresoras</a></li>
     </ul>
 
+    <form action="" method="GET">
+        <input class="form-control me-2" type="search" placeholder="Buscar" name="busqueda">
+        <button class= "btn btn-outline-info" type="submit" name="enviar"> <b>Buscar</b> </button>
+    </form>
+
+    <?php
+        if(isset($_GET['enviar'])){
+            $busqueda = $_GET['busqueda'];
+
+            if(isset($_GET['busqueda'])){
+                $where="WHERE aps.nombre LIKE '%".$busqueda."%' OR modelo LIKE'%".$busqueda."%' OR mac LIKE'%".$busqueda."%' OR serial_n LIKE'%".$busqueda."%'";
+            }
+        }
+    ?>
+
+    <br>
+
+    <form method="post">
+
         <input type="text" name="name2" placeholder="Nombre" required>
         <input type="text" name="modelo" placeholder="Modelo" required>
         <input type="text" name="mac1" placeholder="Direccion MAC" required>
         <input type="text" name="snumber" placeholder="Numero de serie" required>
         <input type="submit" name="register3">
 
-    </form>
+        
 
+    </form>
+        <br>
         <table border="1">
             <tr>
                 <td>ID</td>
@@ -43,7 +64,7 @@ $conex = mysqli_connect("localhost", "root", "", "formulario_hcdl");
             </tr>
 
             <?php
-            $sql="SELECT * from aps";
+            $sql="SELECT * from aps $where";
             $result=mysqli_query($conex, $sql);
 
             while($mostrar=mysqli_fetch_array($result)){

@@ -1,5 +1,6 @@
 <?php
 $conex = mysqli_connect("localhost", "root", "", "formulario_hcdl");
+$where="";
 ?>
 
 
@@ -17,14 +18,32 @@ $conex = mysqli_connect("localhost", "root", "", "formulario_hcdl");
 
 </head>
 <body>
-    <form method="post">
-        <h1>Formulario HCDL | EQUIPOS</h1>
+    <h1>Formulario HCDL | EQUIPOS</h1>
 
-        <ul>
-            <li><a href="aps.php">Access Point</a></li>
-            <li><a href="equipos.php">Equipos HCDL</a></li>
-            <li><a href="impresoras.php">Impresoras</a></li>
-        </ul>
+    <ul>
+        <li><a href="aps.php">Access Point</a></li>
+        <li><a href="equipos.php">Equipos HCDL</a></li>
+        <li><a href="impresoras.php">Impresoras</a></li>
+    </ul>
+
+    <form action="" method="GET">
+        <input class="form-control me-2" type="search" placeholder="Buscar" name="busqueda">
+        <button class= "btn btn-outline-info" type="submit" name="enviar"> <b>Buscar</b> </button>
+    </form>
+
+    <?php
+        if(isset($_GET['enviar'])){
+            $busqueda = $_GET['busqueda'];
+
+            if(isset($_GET['busqueda'])){
+                $where="WHERE equipos_hcdl.nombre LIKE '%".$busqueda."%' OR ipv4 LIKE'%".$busqueda."%' OR mac LIKE'%".$busqueda."%'";
+            }
+        }
+    ?>
+
+    <br>
+
+    <form method="post">
 
         <input type="text" name="name" placeholder="Nombre" required>
         <input type="text" name="ipv4" placeholder="Direccion IP" required>
@@ -32,7 +51,7 @@ $conex = mysqli_connect("localhost", "root", "", "formulario_hcdl");
         <input type="submit" name="register">
 
     </form>
-
+    <br>
     <table border="1">
             <tr>
                 <td>id</td>
@@ -42,7 +61,7 @@ $conex = mysqli_connect("localhost", "root", "", "formulario_hcdl");
             </tr>
 
             <?php
-            $sql="SELECT * from equipos_hcdl";
+            $sql="SELECT * from equipos_hcdl $where";
             $result=mysqli_query($conex, $sql);
 
             while($mostrar=mysqli_fetch_array($result)){

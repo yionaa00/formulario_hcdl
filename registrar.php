@@ -5,7 +5,7 @@ include("connect.php");
 if (isset($_POST['register'])){
     if (strlen($_POST['name']) >= 1 &&
         strlen($_POST['ipv4']) >= 1 && 
-        strlen($_POST['mac']) >= 1 ){
+        strlen($_POST['mac1']) >= 1 ){
             $name = trim($_POST['name']);
             $ipv4 = trim($_POST['ipv4']);
             $mac = trim($_POST['mac']);
